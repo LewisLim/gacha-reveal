@@ -3,6 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import "./App.css";
 import GachaItem from "./components/GachaItem";
+import { Environment } from "@react-three/drei";
 
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -27,14 +28,14 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
     const duration = 3;
     const progress = Math.min(elapsed / duration, 1);
     const totalRotation = Math.PI * 2 * 1.5;
-    const scale = THREE.MathUtils.lerp(0.1, 1, progress);
+    const scale = THREE.MathUtils.lerp(0.8, 2.5, progress);
 
     groupRef.current.scale.set(scale, scale, scale);
     groupRef.current.rotation.y = progress * totalRotation;
   });
 
   return (
-    <group ref={groupRef}>
+    <group ref={groupRef} rotation={[0.3, 0, 0]}>
       <Suspense fallback={null}>
         <GachaItem modelPath="/prizes/a/onigiri-gold-trophy.glb" />
       </Suspense>
@@ -64,17 +65,29 @@ export default function App() {
 
   return (
     <>
-      <h1 className="text-lg font-bold text-blue-500">Gacha Reveal</h1>
-      <div id="canvas-container" className="h-[500px] bg-pink-100">
+      <div id="canvas-container" className="h-[700px]">
         <Canvas>
-          <ambientLight intensity={0.1} />
-          <directionalLight color="white" position={[0, 0, 5]} />
+          <Environment preset="apartment" />
+          {/* <ambientLight intensity={0} /> */}
+          {/* <directionalLight color="white" position={[5, 5, 5]} intensity={0} /> */}
           <RevealPrize isRevealing={isRevealing} />
           <GachaEgg isRevealing={isRevealing} />
         </Canvas>
       </div>
-      <button onClick={() => setIsRevealing(true)}>Open Gacha</button>
-      <button onClick={() => setIsRevealing(false)}>Reset</button>
+      <div className="w-full flex justify-center space-x-4 mb-4">
+        <button
+          onClick={() => setIsRevealing(true)}
+          className="bg-blue-500 hover:bg-blue-400 text-white text-sm font-medium py-2 px-4 rounded-full"
+        >
+          Open Gacha
+        </button>
+        <button
+          onClick={() => setIsRevealing(false)}
+          className="bg-transparent hover:bg-blue-500 text-blue-400 text-sm font-medium hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        >
+          Reset
+        </button>
+      </div>
     </>
   );
 }
