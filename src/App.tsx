@@ -4,6 +4,7 @@ import * as THREE from "three";
 import "./App.css";
 import GachaItem from "./components/GachaItem";
 import { Environment } from "@react-three/drei";
+import { GachaConfetti } from "./special-effects/GachaConfetti";
 
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -73,6 +74,7 @@ export default function App() {
           <RevealPrize isRevealing={isRevealing} />
           <GachaEgg isRevealing={isRevealing} />
         </Canvas>
+        <GachaConfetti isRevealing={isRevealing} tier={"S"} />
       </div>
       <div className="w-full flex justify-center space-x-4 mb-4">
         <button
