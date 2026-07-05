@@ -30,14 +30,14 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
     const duration = 3;
     const progress = Math.min(elapsed / duration, 1);
     const totalRotation = Math.PI * 2 * 1.5;
-    const scale = THREE.MathUtils.lerp(0.8, 2.5, progress);
+    const scale = THREE.MathUtils.lerp(0.7, 0.7, progress);
 
     groupRef.current.scale.set(scale, scale, scale);
     groupRef.current.rotation.y = progress * totalRotation;
   });
 
   return (
-    <group ref={groupRef} rotation={[0.3, 0, 0]}>
+    <group ref={groupRef} position={[0.1, -0.5, 2.6]} rotation={[0.3, 0, 0]}>
       <Suspense fallback={null}>
         <GachaItem modelPath="/prizes/a/onigiri-gold-trophy.glb" />
       </Suspense>
@@ -69,7 +69,7 @@ export default function App() {
     <>
       <div id="canvas-container" className="h-[700px]">
         <Canvas>
-          <Environment preset="apartment" />
+          <Environment preset="lobby" />
           <CombiniScene />
           {/* <ambientLight intensity={0} /> */}
           {/* <directionalLight color="white" position={[5, 5, 5]} intensity={0} /> */}
