@@ -5,6 +5,7 @@ import "./App.css";
 import GachaItem from "./components/GachaItem";
 import { Environment } from "@react-three/drei";
 import { GachaConfetti } from "./special-effects/GachaConfetti";
+import { CombiniScene } from "./components/SceneBackground";
 
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -69,6 +70,7 @@ export default function App() {
       <div id="canvas-container" className="h-[700px]">
         <Canvas>
           <Environment preset="apartment" />
+          <CombiniScene />
           {/* <ambientLight intensity={0} /> */}
           {/* <directionalLight color="white" position={[5, 5, 5]} intensity={0} /> */}
           <RevealPrize isRevealing={isRevealing} />
