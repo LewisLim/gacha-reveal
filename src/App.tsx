@@ -7,10 +7,12 @@ import { Environment } from "@react-three/drei";
 import { GachaConfetti } from "./special-effects/GachaConfetti";
 import { CombiniScene } from "./components/SceneBackground";
 import { FluorescentLight } from "./components/FluorescentLight";
+import { Character } from "./components/Character";
 
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
   const startTimeRef = useRef<number | null>(null);
+  const deg = (d: number) => (d * Math.PI) / 180;
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -28,17 +30,17 @@ function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
     }
 
     const elapsed = state.clock.elapsedTime - startTimeRef.current;
-    const duration = 3;
+    const duration = 1;
     const progress = Math.min(elapsed / duration, 1);
-    const totalRotation = Math.PI * 2 * 1.5;
-    const scale = THREE.MathUtils.lerp(0.7, 0.7, progress);
+    const totalRotation = Math.PI * 2 * 0.5;
+    const scale = THREE.MathUtils.lerp(0.4, 0.4, progress);
 
     groupRef.current.scale.set(scale, scale, scale);
     groupRef.current.rotation.y = progress * totalRotation;
   });
 
   return (
-    <group ref={groupRef} position={[0.1, -0.5, 2.6]} rotation={[0.3, 0, 0]}>
+    <group ref={groupRef} position={[0.4, -0.5, 3]} rotation={[0.3, 0, 0]}>
       <Suspense fallback={null}>
         <GachaItem modelPath="/prizes/a/onigiri-gold-trophy.glb" />
       </Suspense>
@@ -73,6 +75,17 @@ export default function App() {
           <Environment preset="lobby" />
           <FluorescentLight />
           <CombiniScene />
+          <Character
+            modelPath="/people/combini-worker-1.glb"
+            position={[-0.8, -1, 2.7]}
+            rotation={[0, 89.5, 0]}
+          />
+          <Character
+            modelPath="/people/player-male.glb"
+            position={[1, -1, 2.7]}
+            rotation={[0, -89.5, 0]}
+          />
+
           <RevealPrize isRevealing={isRevealing} />
           {/* <GachaEgg isRevealing={isRevealing} /> */}
         </Canvas>
