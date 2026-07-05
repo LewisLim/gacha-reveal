@@ -6,6 +6,7 @@ import GachaItem from "./components/GachaItem";
 import { Environment } from "@react-three/drei";
 import { GachaConfetti } from "./special-effects/GachaConfetti";
 import { CombiniScene } from "./components/SceneBackground";
+import { FluorescentLight } from "./components/FluorescentLight";
 
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -56,7 +57,7 @@ function GachaEgg({ isRevealing }: { isRevealing: boolean }) {
 
   return (
     <mesh ref={meshRef}>
-      <circleGeometry />
+      <circleGeometry args={[2, 32]} />
       <meshStandardMaterial color="gold" />
     </mesh>
   );
@@ -70,11 +71,10 @@ export default function App() {
       <div id="canvas-container" className="h-[700px]">
         <Canvas>
           <Environment preset="lobby" />
+          <FluorescentLight />
           <CombiniScene />
-          {/* <ambientLight intensity={0} /> */}
-          {/* <directionalLight color="white" position={[5, 5, 5]} intensity={0} /> */}
           <RevealPrize isRevealing={isRevealing} />
-          <GachaEgg isRevealing={isRevealing} />
+          {/* <GachaEgg isRevealing={isRevealing} /> */}
         </Canvas>
         <GachaConfetti isRevealing={isRevealing} tier={"S"} />
       </div>
