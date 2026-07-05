@@ -8,6 +8,7 @@ import { GachaConfetti } from "./special-effects/GachaConfetti";
 import { CombiniScene } from "./components/SceneBackground";
 import { FluorescentLight } from "./components/FluorescentLight";
 import { Character } from "./components/Character";
+import { SceneItem } from "./components/SceneItem";
 
 function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -58,6 +59,12 @@ export default function App() {
           <Environment preset="lobby" />
           <FluorescentLight />
           <CombiniScene />
+          <SceneItem
+            modelPath="/scene/lottery-wheel.glb"
+            position={[-0.25, -0.6, 2.6]}
+            rotation={[0, deg(65), 0]}
+            scale={0.5}
+          />
           <Character
             modelPath="/people/worker-1.glb"
             position={[-0.8, -1, 2.7]}
