@@ -1,105 +1,58 @@
-import { useRef, useState, Suspense } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+// App.tsx
 import "./App.css";
-import GachaItem from "./components/GachaItem";
-import { Environment } from "@react-three/drei";
+import { useState } from "react";
+import { Canvas } from "@react-three/fiber";
 import { GachaConfetti } from "./special-effects/GachaConfetti";
-import { CombiniScene } from "./components/SceneBackground";
-import { FluorescentLight } from "./components/FluorescentLight";
-import { Character } from "./components/Character";
-import { SceneItem } from "./components/SceneItem";
+import { CombiniScene } from "./components/scenes/CombiniScene";
+import { StreetScene } from "./components/scenes/StreetScene";
 
-function RevealPrize({ isRevealing }: { isRevealing: boolean }) {
-  const groupRef = useRef<THREE.Group>(null);
-  const startTimeRef = useRef<number | null>(null);
-
-  useFrame((state) => {
-    if (!groupRef.current) return;
-
-    if (!isRevealing) {
-      groupRef.current.visible = false;
-      startTimeRef.current = null;
-      return;
-    }
-
-    groupRef.current.visible = true;
-
-    if (startTimeRef.current === null) {
-      startTimeRef.current = state.clock.elapsedTime;
-    }
-
-    const elapsed = state.clock.elapsedTime - startTimeRef.current;
-    const duration = 1;
-    const progress = Math.min(elapsed / duration, 1);
-    const totalRotation = Math.PI * 2 * 0.5;
-    const scale = THREE.MathUtils.lerp(0.4, 0.4, progress);
-
-    groupRef.current.scale.set(scale, scale, scale);
-    groupRef.current.rotation.y = progress * totalRotation;
-  });
-
-  return (
-    <group ref={groupRef} position={[0.4, -0.5, 3]} rotation={[0.3, 0, 0]}>
-      <Suspense fallback={null}>
-        <GachaItem modelPath="/prizes/a/onigiri-gold-trophy.glb" />
-      </Suspense>
-    </group>
-  );
-}
+type Scene = "combini" | "street" | "pray";
 
 export default function App() {
+  const [scene, setScene] = useState<Scene>("combini");
   const [isRevealing, setIsRevealing] = useState(false);
-  const deg = (d: number) => (d * Math.PI) / 180;
 
   return (
-    <>
+    <div style={{ position: "relative" }}>
       <div id="canvas-container" className="h-[700px]">
         <Canvas>
-          <Environment preset="lobby" />
-          <FluorescentLight />
-          <CombiniScene />
-          <SceneItem
-            modelPath="/scene/lottery-wheel.glb"
-            position={[-0.25, -0.6, 2.6]}
-            rotation={[0, deg(65), 0]}
-            scale={0.5}
-          />
-          <Character
-            modelPath="/people/worker-1.glb"
-            position={[-0.8, -1, 2.7]}
-            rotation={[0, deg(90), 0]}
-          />
-          <Character
-            modelPath="/people/player-male.glb"
-            position={[1, -1, 2.7]}
-            rotation={[0, deg(-90), 0]}
-          />
-          <Character
-            modelPath="/people/cat-1.glb"
-            position={[-1.6, -1, 3.3]}
-            rotation={[0, deg(240), 0]}
-            scale={0.4}
-          />
-
-          <RevealPrize isRevealing={isRevealing} />
+          {scene === "combini" && (
+            <CombiniScene
+              isRevealing={isRevealing}
+              setIsRevealing={setIsRevealing}
+              onOpen={() => setScene("combini")}
+            />
+          )}
+          {scene === "street" && <StreetScene />}
         </Canvas>
-        <GachaConfetti isRevealing={isRevealing} tier={"S"} />
-      </div>
-      <div className="w-full flex justify-center space-x-4 mb-4">
-        <button
-          onClick={() => setIsRevealing(true)}
-          className="bg-blue-500 hover:bg-blue-400 text-white text-sm font-medium py-2 px-4 rounded-full"
+
+        <GachaConfetti
+          isRevealing={scene === "combini" && isRevealing}
+          tier="S"
+        />
+
+        <div
+          style={{ position: "absolute", bottom: 20, left: 0, right: 0 }}
+          className="flex justify-center space-x-4"
         >
-          Open Gacha
-        </button>
-        <button
-          onClick={() => setIsRevealing(false)}
-          className="bg-transparent hover:bg-blue-500 text-blue-400 text-sm font-medium hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        >
-          Reset
-        </button>
+          {scene === "combini" && (
+            <button
+              onClick={() => setIsRevealing(true)}
+              className="bg-teal-500 hover:bg-teal-400 text-white text-sm font-medium py-2 px-4 rounded-full cursor-pointer"
+            >
+              Open Gacha
+            </button>
+          )}
+          {scene === "combini" && (
+            <button
+              onClick={() => setIsRevealing(false)}
+              className="bg-transparent hover:bg-teal-500 text-teal-400 text-sm font-medium hover:text-white py-2 px-4 border border-teal-500 hover:border-transparent rounded cursor-pointer"
+            >
+              Reset
+            </button>
+          )}
+        </div>
       </div>
-    </>
+    </div>
   );
 }
