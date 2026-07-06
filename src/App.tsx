@@ -6,7 +6,7 @@ import { GachaConfetti } from "./special-effects/GachaConfetti";
 import { CombiniScene } from "./components/scenes/CombiniScene";
 import { StreetScene } from "./components/scenes/StreetScene";
 
-type Scene = "combini" | "street" | "pray";
+type Scene = "combini" | "street" | "temple";
 
 export default function App() {
   const [scene, setScene] = useState<Scene>("combini");
@@ -30,6 +30,31 @@ export default function App() {
           isRevealing={scene === "combini" && isRevealing}
           tier="S"
         />
+
+        <div
+          style={{ position: "absolute", top: 20, left: 0, right: 20 }}
+          className="flex flex-col w-22 ms-auto space-y-2 border border-teal-600 p-2"
+        >
+          <h2 className="text-center text-xs text-gray-800">Move To</h2>
+          <button
+            onClick={() => setScene("combini")}
+            className="bg-teal-500 hover:bg-teal-400 text-white text-xs font-medium p-2 rounded-sm cursor-pointer"
+          >
+            Combini
+          </button>
+          <button
+            onClick={() => setScene("street")}
+            className="bg-teal-500 hover:bg-teal-400 text-white text-xs font-medium p-2 rounded-sm cursor-pointer"
+          >
+            Street
+          </button>
+          <button
+            onClick={() => setScene("temple")}
+            className="bg-teal-500 hover:bg-teal-400 text-white text-xs font-medium p-2 rounded-sm cursor-pointer"
+          >
+            Temple
+          </button>
+        </div>
 
         <div
           style={{ position: "absolute", bottom: 20, left: 0, right: 0 }}
