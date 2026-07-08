@@ -16,7 +16,7 @@ export default function App() {
 
   return (
     <div style={{ position: "relative" }}>
-      <div id="canvas-container" className="h-[700px]">
+      <div id="canvas-container" className="min-h-[700px] h-screen">
         <Canvas>
           {scene === "combini" && <CombiniScene isRevealing={isRevealing} />}
           {scene === "street" && <StreetScene />}
