@@ -4,28 +4,26 @@ import { Canvas } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { GachaConfetti } from "./components/effects/GachaConfetti";
 import { CombiniScene } from "./components/scenes/CombiniScene";
-import { StreetScene } from "./components/scenes/StreetScene";
 import SceneControls from "./components/ui/SceneControls";
-import SceneToggle, { type Scene } from "./components/ui/SceneToggle";
 
-useGLTF.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/')
+useGLTF.setDecoderPath(
+  "https://www.gstatic.com/draco/versioned/decoders/1.5.6/",
+);
 
 export default function App() {
-  const [scene, setScene] = useState<Scene>("combini");
+  const [scene, setScene] = useState<"combini">("combini");
   const [isRevealing, setIsRevealing] = useState(false);
 
   return (
     <div style={{ position: "relative" }}>
       <div id="canvas-container" className="min-h-[700px] h-screen">
         <Canvas>
-          {scene === "combini" && <CombiniScene isRevealing={isRevealing} />}
-          {scene === "street" && <StreetScene />}
+          <CombiniScene isRevealing={isRevealing} />
         </Canvas>
         <GachaConfetti
           isRevealing={scene === "combini" && isRevealing}
           tier="S"
         />
-        <SceneToggle scene={scene} setScene={setScene} />
         <SceneControls scene={scene} setIsRevealing={setIsRevealing} />
       </div>
     </div>
